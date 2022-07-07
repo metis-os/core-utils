@@ -1,0 +1,29 @@
+# Maintainer: iyamnabeen
+#gmail      : <iym.nabeen@gmail.com>
+#github     : <github.com/metis-os>
+pkgname=metis-dmenu
+pkgver=5.0
+pkgrel=1
+pkgdesc="suckless's dmenu build for @metis-os"
+arch=(x86_64)
+url="https://github.com/metis-os/core-utils"
+license=('MIT')
+depends=('glibc' 'fontconfig' 'libx11' 'libxft')
+makedepends=('git' 'make')
+optdepends=('st')
+provides=("dmenu")
+conflicts=("dmenu")
+options=('zipman')
+source=('git+https://github.com/metis-os/core-utils')
+md5sums=('SKIP')
+
+build() {
+	cd core-utils/files/"$pkgname"
+	make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11
+}
+
+package() {
+	cd core-utils/files/"$pkgname"
+	make PREFIX=/usr DESTDIR="$pkgdir/" install
+	install -m644 -D LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+}
